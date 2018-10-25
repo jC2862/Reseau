@@ -17,7 +17,7 @@ int tun_alloc(char *dev)
    *
    *        IFF_NO_PI - Do not provide packet information
    */
-  ifr.ifr_flags = IFF_TUN;
+  ifr.ifr_flags = IFF_TUN | IFF_NO_PI;
   if( *dev )
     strncpy(ifr.ifr_name, dev, IFNAMSIZ);
 
@@ -30,7 +30,7 @@ int tun_alloc(char *dev)
 }
 
 void copie(int src, int dst){
-	for(;;){
+  for(;;){
 		char buf[2048];
 		int r = read(src, buf, 2048);
 		if(r<0){perror("Erreur lecture");exit(1);}
@@ -50,17 +50,17 @@ int createAndSetTun(char * tun_name, char * address){
   //Configuration du tunnel
   char tun_conf[2048];
   sprintf(tun_conf, "ip addr add %s dev %s", address, tun_name);
+  system(tun_conf);
 
   return tunfd;
 }
-
 
 int main(int narg, char** argv){
 
   if(narg != 3){printf("Usage::%s tunnel_name address\n", argv[0]); exit(1);}
 
   int tunfd = createAndSetTun(argv[1], argv[2]);
-
+  system("ip addr");
   copie(tunfd, 1);
 
   return EXIT_SUCCESS;
