@@ -4,3 +4,7 @@ all: iftest.o
 
 iftest.o:
 	gcc -c iftun.c
+
+clean:
+	rm *.o
+	rm iftest
