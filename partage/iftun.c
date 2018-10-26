@@ -54,7 +54,7 @@ int createAndSetTun(char * tun_name, char * address){
 
   return tunfd;
 }
-
+/*
 int main(int narg, char** argv){
 
   if(narg != 3){printf("Usage::%s tunnel_name address\n", argv[0]); exit(1);}
@@ -66,7 +66,7 @@ int main(int narg, char** argv){
   return EXIT_SUCCESS;
 
 }
-
+*/
 /*
 int main (int argc, char** argv){
 
