@@ -25,7 +25,6 @@ void ext_in(int soctun0, char * addr){
     freeaddrinfo(resol);
 
     copie(soctun0, s);
-
 }
 
 void ext_out(){
@@ -37,6 +36,7 @@ void ext_out(){
     struct sockaddr_in client;
     int err;
 
+    //Configuration serveur
     char * port="123"; fprintf(stderr,"Ecoute sur le port %s\n",port);
     err = getaddrinfo(NULL,port,&indic,&resol);
     if (err<0){fprintf(stderr,"Resolution: %s\n",gai_strerror(err));exit(2);}
@@ -50,5 +50,16 @@ void ext_out(){
     fprintf(stderr,"bind!\n");
     if (listen(s,SOMAXCONN)<0) {perror("listen");exit(6);}
 
-    copie(s, 1);
+    printf("Attente de connexion \n");
+
+    //Attente de connection
+    len=sizeof(struct sockaddr_in);
+    if( (n=accept(s,(struct sockaddr *)&client,(socklen_t*)&len)) < 0 ){perror("accept");exit(7);}
+    char hotec[NI_MAXHOST];  char portc[NI_MAXSERV];
+    err = getnameinfo((struct sockaddr*)&client,len,hotec,NI_MAXHOST,portc,NI_MAXSERV,0);
+    printf("ERR: %d\n", err);
+    if (err < 0 ){fprintf(stderr,"resolution client (%i): %s\n",n,gai_strerror(err));}
+    else{fprintf(stderr,"accept! (%i) ip=%s port=%s\n",n,hotec,portc);}
+
+    copie(n, 1);
 }
