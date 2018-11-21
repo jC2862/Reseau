@@ -15,5 +15,6 @@
 
 void ext_in(int soctun0, char * addr, char * por);
 void ext_out(int tun_fd);
+void ext_outv2(int tun_fd, char * inport, char * options);
 
 #endif

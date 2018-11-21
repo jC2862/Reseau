@@ -15,6 +15,10 @@ iftun.o: iftun.c
 extremite.o: extremite.c iftun.o
 	gcc  iftun.o extremite.c -c
 
+tun64d: tunner.c extremite.o iftun.o
+	gcc tunner.c -c
+	gcc extremite.o iftun.o tunner.o -o tun64d
+
 clean:
 	rm *.o
 	rm iftest

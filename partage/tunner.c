@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "iftun.h"
+#include "extremite.h"
 /*
 # interface tun
 tun=tun0
@@ -56,14 +58,23 @@ void readFile(FILE * file){
 
 int main(int narg, char ** argv){
 
-  if(narg != 2){printf("Usage::%s configfile\n",argv[0]);exit(1);}
+  if(narg != 2){printf("Usage::%s configfile setroutefile.sh\n",argv[0]);exit(1);}
 
   FILE * confFile = fopen(argv[1], "r");
   if(confFile == NULL){perror("Ouverture fichier");exit(1);}
+  //Recuperation des variables du fichier de configuration
   readFile(confFile);
-
   printf("%s %s %s %s %s %s\n", name, inip, inport, options, outport, outip);
-
   fclose(confFile);
-  //
+  //Utilisation des variables
+  if(system(argv[2])<0){perror("Configuration tun"); exit(12);}
+  int tunfd = createAndSetTun(name, inip);
+  pid_t f = fork();
+  if(f < 0){perror("Fork");exit(1);}
+  if(f == 0){
+    ext_outv2(tunfd, inport, options);
+    exit(0);
+  }else{
+    ext_in(tunfd, outip, outport);
+  }
 }
