@@ -27,7 +27,7 @@ void ext_in(int soctun0, char * addr){
     copie(soctun0, s);
 }
 
-void ext_out(){
+void ext_out(int tun_fd){
     int s,n,len,on;
     struct addrinfo * resol;
     struct addrinfo indic = {AI_PASSIVE,
@@ -61,5 +61,5 @@ void ext_out(){
     if (err < 0 ){fprintf(stderr,"resolution client (%i): %s\n",n,gai_strerror(err));}
     else{fprintf(stderr,"accept! (%i) ip=%s port=%s\n",n,hotec,portc);}
 
-    copie(n, 1);
+    copie(n, tun_fd);
 }
