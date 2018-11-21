@@ -31,17 +31,17 @@ int tun_alloc(char *dev)
 
 void copie(int src, int dst){
   for(;;){
-		char buf[128];
+		char buf[2048];
     printf("%d->\n",src);
-		int r = read(src, buf, 128);
+		int r = read(src, buf, 2048);
 		if(r<0){perror("Erreur lecture");exit(1);}
 		if(r == 0){return;}
-    printf("Lecture\n");
+    printf("%s\n",buf);
 
     printf(">-%d\n",dst);
-		int w = write(dst, buf, 128);
+		int w = write(dst, buf, 2048);
 		if(w<0){perror("Erreur ecriture");exit(1);}
-    printf("Ecriture \n");
+    printf("%s \n", buf);
 	}
 }
 
