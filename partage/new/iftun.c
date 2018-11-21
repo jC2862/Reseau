@@ -54,10 +54,8 @@ int createAndSetTun(char * tun_name, char * address){
   //Configuration du tunnel
   char tun_conf[2048];
   sprintf(tun_conf, "ip addr add %s dev %s", address, tun_name);
-  printf("%s\n", tun_conf);
   system(tun_conf);
   sprintf(tun_conf, "ip link set %s up", tun_name);
-  printf("%s\n", tun_conf);
   system(tun_conf);
 
   return tunfd;

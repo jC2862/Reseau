@@ -38,3 +38,8 @@ routes:
       - name: LAN1
         ipaddr: 172.16.2.128/28
         gateway: 172.16.2.162
+    - name: eth2
+    - routes:
+      - name: LAN3
+        ipaddr: 172.16.2.144/28
+        gateway: 172.16.2.186

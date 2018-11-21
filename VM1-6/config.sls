@@ -43,3 +43,9 @@ routes:
       - name: LAN2-6
         ipaddr: fc00:1234:2::/64
         gateway: fc00:1234:1::26
+
+# enable ipv4 forwarding
+net.ipv4.ip_forward:
+  sysctl:
+    - present
+    - value: 1
