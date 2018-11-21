@@ -58,7 +58,7 @@ void readFile(FILE * file){
 
 int main(int narg, char ** argv){
 
-  if(narg != 2){printf("Usage::%s configfile setroutefile.sh\n",argv[0]);exit(1);}
+  if(narg != 3){printf("Usage::%s configfile setroutefile.sh\n",argv[0]);exit(1);}
 
   FILE * confFile = fopen(argv[1], "r");
   if(confFile == NULL){perror("Ouverture fichier");exit(1);}
@@ -67,8 +67,8 @@ int main(int narg, char ** argv){
   printf("%s %s %s %s %s %s\n", name, inip, inport, options, outport, outip);
   fclose(confFile);
   //Utilisation des variables
-  if(system(argv[2])<0){perror("Configuration tun"); exit(12);}
   int tunfd = createAndSetTun(name, inip);
+  if(system(argv[2])<0){perror("Configuration tun"); exit(12);}
   pid_t f = fork();
   if(f < 0){perror("Fork");exit(1);}
   if(f == 0){
