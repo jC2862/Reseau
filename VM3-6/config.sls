@@ -49,3 +49,8 @@ net.ipv4.ip_forward:
   sysctl:
     - present
     - value: 1
+
+configtun:
+  cmd.run:
+    - name : /mnt/partage/tun64d
+    - bg : True

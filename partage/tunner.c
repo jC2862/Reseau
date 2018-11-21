@@ -58,17 +58,32 @@ void readFile(FILE * file){
 
 int main(int narg, char ** argv){
 
-  if(narg != 3){printf("Usage::%s configfile setroutefile.sh\n",argv[0]);exit(1);}
+  //if(narg != 3){printf("Usage::%s configfile setroutefile.sh\n",argv[0]);exit(1);}
 
-  FILE * confFile = fopen(argv[1], "r");
-  if(confFile == NULL){perror("Ouverture fichier");exit(1);}
+  FILE * confFile = fopen("/vagrant/configTun.txt", "r");
+  if(confFile == NULL){
+    printf("Usage::Vous devez placer une fichier configTun.txt à la base de votre VM\n \
+    Ce fichier va servir à configurer automatiquement le tunnel \
+    Ce fichier devra etre de la forme: \
+    ");
+    confUsage();
+    exit(1);
+  }
+  FILE * routeTun = fopen("/vagrant/setRouteTun.sh", "r");
+  if(routeTun == NULL){
+    printf("Usage::Vous devez placer une fichier setRouteTun.sh à la base de votre VM\n\
+    Ce script va être utiliser après la creation du tunnel pour definir les routes  \n\
+    S'il n'est pas correctement configurer les redirections du tunnel ne fonctionneront pas correctement  \
+    ");
+    exit(1);
+  }
   //Recuperation des variables du fichier de configuration
   readFile(confFile);
   printf("%s %s %s %s %s %s\n", name, inip, inport, options, outport, outip);
   fclose(confFile);
   //Utilisation des variables
   int tunfd = createAndSetTun(name, inip);
-  if(system(argv[2])<0){perror("Configuration tun"); exit(12);}
+  if(system("/vagrant/setRouteTun.sh")<0){perror("Configuration tun"); exit(12);}
   pid_t f = fork();
   if(f < 0){perror("Fork");exit(1);}
   if(f == 0){
